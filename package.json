@@ -1,10 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "server for essay application",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index",
+    "start": "nodemon index.js",
     "test": "NODE_ENV=test jest ./test/* --forceExit",
     "coverage": "jest --coverage"
   },
