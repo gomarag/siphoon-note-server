@@ -1,15 +1,18 @@
 require('dotenv').config();
 const express = require('express');
-const http = require('http');
+const https = require('https');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+
 const app = express();
 
-const port = process.env.PORT || 80;
+const port = process.env.HTTPS_PORT || 80;
 
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.status(200).send('Hello From Server!😀');
+  res.status(200).send('Hello From SSL Server!😀');
 });
 
 // 랜딩페이지 접속 에러 시 서버에서 처리
@@ -27,11 +30,15 @@ app.use((err, req, res, next) => {
   });
 });
 // 랜딩페이지 접속 에러 시 서버에서 처리
+const credentials = {
+  key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
+};
 
-const server = http.createServer(app);
+const server = https.createServer(credentials, app);
 
 server.listen(port, () => {
-  console.log(`서버가 ${port}에서 실행 중!`);
+  console.log(`Secure Server on ${port}!`);
 });
 
 module.exports = server;
