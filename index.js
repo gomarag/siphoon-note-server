@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const https = require('https');
 const cors = require('cors');
 const path = require('path');
@@ -22,26 +23,18 @@ const app = express();
 
 const port = process.env.HTTPS_PORT || 5500;
 
-app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.status(200).send('Hello From SSL Server!😀');
-});
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'OPTIONS', 'DELETE'],
+  })
+);
 
-// 랜딩페이지 접속 에러 시 서버에서 처리
-app.use((req, res, next) => {
-  const err = new Error(`${req.method} ${req.url} Router Not Found`);
-  err.status = 404;
-  next(err);
-});
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message,
-    error: err,
-  });
-});
+app.use(require('./routes'));
 
 const credentials = {
   key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
