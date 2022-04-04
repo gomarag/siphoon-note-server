@@ -4,6 +4,7 @@ const { createUser } = require('./createUser');
 const { getUser } = require('./getUser');
 const { updateUser } = require('./updateUser');
 const { deleteUser } = require('./deleteUser');
+const { getWeeklyUserList } = require('./getWeeklyUserList');
 
 module.exports = {
   // 사용자 계정 생성
@@ -17,4 +18,7 @@ module.exports = {
 
   // 사용자 계정 삭제
   deleteUser,
+
+  // 랜딩페이지의 사용자 목록 조회
+  getWeeklyUserList,
 };
